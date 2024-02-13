@@ -46,11 +46,6 @@ class PNGProcessingDemo():
         # parse metadata
         metadata = json_read(png_path.with_suffix('.json'), object_hook=fraction_from_json)
 
-        # in case of absence of color matrix we use mean color matrix of Hauwei Mate 40 Pro 
-        if "color_matrix_1" not in metadata.keys():
-            metadata["color_matrix_1"] = self.camera_matrix
-            metadata["color_matrix_2"] = self.camera_matrix
-
         # executing img pipelinex
         pipeline_exec = PipelineExecutor(
             raw_image, metadata, self.pipeline_demo)

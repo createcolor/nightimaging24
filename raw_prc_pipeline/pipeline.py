@@ -22,7 +22,14 @@ class RawProcessingPipelineDemo:
     
     Also each such public method must return an image (ndarray) as the result of processing.
     """
-    def __init__(self, illumination_estimation='', denoise_flg=True, tone_mapping='Flash', out_landscape_width=None, out_landscape_height=None):
+    def __init__(self, illumination_estimation='', 
+                       denoise_flg=True, 
+                       tone_mapping='Flash', 
+                       out_landscape_width=None, 
+                       out_landscape_height=None,
+                       color_matrix = [  1.06835938, -0.29882812, -0.14257812, 
+                                        -0.43164062,  1.35546875,  0.05078125, 
+                                        -0.1015625,   0.24414062,  0.5859375]):
         """
         RawProcessingPipelineDemo __init__ method.
 
@@ -42,7 +49,10 @@ class RawProcessingPipelineDemo:
         out_landscape_height : int, optional
             The height of output image (when orientation is landscape). If None, the image resize will not be performed.
             By default None.
+        color_matrix : list, optional
+            Avg color tranformation matrix. If None, average color transformation matrix of Huawei Mate 40 Pro is used.
         """
+
         self.params = locals()
         del self.params['self']
 
@@ -72,6 +82,10 @@ class RawProcessingPipelineDemo:
         return white_balanced
 
     def xyz_transform(self, white_balanced, img_meta):
+        # in case of absence of color matrix we use mean color matrix
+        if "color_matrix_1" not in img_meta.keys():
+            img_meta["color_matrix_1"] = self.params["color_matrix"]
+            img_meta["color_matrix_2"] = self.params["color_matrix"]
         return apply_color_space_transform(white_balanced, img_meta['color_matrix_1'], img_meta['color_matrix_2'])
 
     def srgb_transform(self, xyz, img_meta):
