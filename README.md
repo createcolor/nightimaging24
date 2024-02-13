@@ -49,4 +49,4 @@ sudo docker build -t nightimaging .
 sudo docker run --rm -u $(id -u):$(id -g) -v $(pwd)/data:/data nightimaging ./run.sh
 ```
 
-Also the visualizations of different stages of implemented demo raw image processing pipeline can be found in the `demo/process_img.ipynb` file, which one can [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/createcolor/nightimaging/blob/main/demo/process_img.ipynb).
+Also the visualizations of different stages of implemented demo raw image processing pipeline can be found in the `demo/process_img.ipynb` file, which one can [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/createcolor/nightimaging24/blob/develop/demo/process_img.ipynb).
