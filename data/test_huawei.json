@@ -1,0 +1,21 @@
+{
+    "black_level": [
+        256,
+        256,
+        256,
+        256
+    ],
+    "white_level": 4095,
+    "cfa_pattern": [
+        0,
+        1,
+        1,
+        2
+    ],
+    "orientation": "Horizontal (normal)",
+    "as_shot_neutral": [
+        0.3305084746,
+        1.0,
+        0.5039224735
+    ]
+}
