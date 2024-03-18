@@ -40,6 +40,7 @@ class PNGProcessingDemo():
         self.pipeline_demo = RawProcessingPipelineDemo(
             illumination_estimation=ie_method, denoise_flg=denoising_flg, tone_mapping=tone_mapping, 
             out_landscape_height=expected_landscape_img_height, out_landscape_width=expected_landscape_img_width)
+        self.infer_times = []
 
     def __call__(self, png_path: Path, out_path: Path):
         # parse raw img
@@ -48,14 +49,14 @@ class PNGProcessingDemo():
         metadata = json_read(png_path.with_suffix('.json'), object_hook=fraction_from_json)
 
         # executing img pipelinex
-        start = time.time()
+        start_time = time.time()
         pipeline_exec = PipelineExecutor(
             raw_image, metadata, self.pipeline_demo)
         # process img
         output_image = pipeline_exec()
         # measure time
-        end = time.time()
-        print(f'Inference time: {end - start}')
+        end_time = time.time()
+        self.infer_times.append(end_time - start_time)
 
         # save results
         output_image = cv2.cvtColor(output_image, cv2.COLOR_RGB2BGR)
@@ -74,6 +75,8 @@ def main(png_dir, out_dir, illumination_estimation, tone_mapping, denoising_flg,
         
     for png_path, out_path in tqdm(zip(png_paths, out_paths), total=len(png_paths)):
         png_processor(png_path, out_path)
+
+    print(f"Average inference time: {np.mean(png_processor.infer_times)} seconds")
 
 
 if __name__ == '__main__':
