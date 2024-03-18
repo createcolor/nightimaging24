@@ -6,6 +6,7 @@ import cv2
 import numpy as np
 from raw_prc_pipeline import expected_landscape_img_height, expected_landscape_img_width, expected_img_ext
 from utils import fraction_from_json, json_read
+import time
 
 
 def parse_args():
@@ -47,10 +48,14 @@ class PNGProcessingDemo():
         metadata = json_read(png_path.with_suffix('.json'), object_hook=fraction_from_json)
 
         # executing img pipelinex
+        start = time.time()
         pipeline_exec = PipelineExecutor(
             raw_image, metadata, self.pipeline_demo)
         # process img
         output_image = pipeline_exec()
+        # measure time
+        end = time.time()
+        print(f'Inference time: {end - start}')
 
         # save results
         output_image = cv2.cvtColor(output_image, cv2.COLOR_RGB2BGR)
