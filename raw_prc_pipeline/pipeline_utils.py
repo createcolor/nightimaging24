@@ -18,6 +18,17 @@ from PIL import Image, ImageOps
 from skimage.restoration import denoise_bilateral
 from skimage.transform import resize as skimage_resize
 
+orientation_str2id = {
+    "Horizontal (normal)" : 1,
+    "Mirror horizontal" : 2,
+    "Rotate 180" : 3, 
+    "Mirror vertical" : 4,
+    "Mirror horizontal and rotate 270 CW" : 5,
+    "Rotate 90 CW" : 6,
+    "Mirror horizontal and rotate 90 CW" : 7,
+    "Rotate 270 CW" : 8
+}
+
 
 def get_visible_raw_image(image_path):
     raw_image = rawpy.imread(image_path).raw_image_visible.copy()
@@ -403,7 +414,7 @@ def resize_using_skimage(img, width=1296, height=864):
     return out_img
 
 
-def resize_using_pil(img, width=1296, height=864):
+def resize_using_pil(img, width=1024, height=768):
     img_pil = Image.fromarray(img)
     out_size = (width, height)
     if img_pil.size == out_size:
@@ -423,7 +434,9 @@ def fix_orientation(image, orientation):
     # 7 = Mirror horizontal and rotate 90 CW
     # 8 = Rotate 270 CW
 
-    if type(orientation) is list:
+    if type(orientation) is str:
+        orientation = orientation_str2id[orientation]
+    elif type(orientation) is list:
         orientation = orientation[0]
 
     if orientation == 1:
